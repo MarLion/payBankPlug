@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--帐号1：<input id="account1"/><br/>-->
+<!--帐号2：<input id="account2"/><br/>-->
+<!--帐号3：<input id="account3"/><br/>-->
+<input id="ss"/>
+<input id="tt"/>
+<script src="js/jquery-3.1.1.min.js"></script>
+<script src="js/bank.js"></script>
+<script src="js/getBankName.js"></script>
+<script>
+    $(function(){
+        //银行卡号四位带空格
+//        $('#account1').bankInput();
+//        $('#account2').bankInput({min:4,max:25,deimiter:','});
+//        $('#account3').bankList();
+        //根据卡号查银行
+        $("#ss").bankInput();
+        $("#ss").on("blur",function(){
+            getBankName({
+                vale:$("#ss").val(),
+                bank:$("#tt").val()
+            });
+        })
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1,user-scalable=no"/>
+    <title>支付完成</title>
+    <script src="js/fontSize.js" type="text/javascript"></script>
+    <link href="css/success.css" rel="stylesheet"/>
+</head>
+<body>
+    <div class="cont bor">
+        <div class="center">
+            <img src="image/success.png" class="suc_icon"/>
+            <p class="suc_text">支付成功</p>
+        </div>
+    </div>
+    <div class="mes_detail">
+        <div class="mes_area bor clear">
+            <span class="font fl">订单编号</span>
+            <span class="num_fon fr" id="order">10021014830713813446358</span>
+        </div>
+        <div class="mes_area bor clear">
+            <span class="font fl">支付金额</span>
+            <span class="num_fon fr" id="amount">30.00</span>
+            <span class="num_fon fr">￥</span>
+        </div>
+    </div>
+<script>
+    var amount = document.getElementById('amount');
+    var order = document.getElementById('order');
+    //var url = window.location.href;
+    var arr = [];
+    var url = 'html?order=123&amount=13.5';
+    var para = url.split('?')[1];
+    var list = para.split('&');
+    for(var i = 0; i<list.length;i++){
+        var s = list[i].split('=')[1];
+        arr.push(s);
+    }
+    order.innerHTML = arr[0];
+    amount.innerHTML = arr[1];
+</script>
+</body>
+</html>

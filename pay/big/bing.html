@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1,user-scalable=no"/>
+    <title>Title</title>
+    <script src="fontSize.js"></script>
+    <link href="big.css" rel="stylesheet"/>
+</head>
+<body>
+    <input value="确定" type="button" style="width: 5rem;height: 1rem;font-size: 0.32rem"/>
+    <div class="mask">
+        <div class="alert_pover">
+            <div class="alert">
+                <div class="theme-poptit">
+                    错误提示
+                </div>
+                <div class="form-div">
+                    <div class="theme-popbod">
+                        您输入的金额不正确
+                    </div>
+                </div>
+                <div class="close">
+                    知道了
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="jquery-1.8.3.min.js"></script>
+<script>
+    $(function(){
+        $("input").on("click",function(){
+            $(".mask").show();
+        })
+        $(".close").on("click",function(){
+            $(".mask").hide();
+        });
+    })
+</script>
+</body>
+</html>

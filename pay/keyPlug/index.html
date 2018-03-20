@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1,user-scalable=no"/>
+    <title>键盘</title>
+    <script src="js/fontSize.js" type="text/javascript"></script>
+    <!--基础样式 和本例中输入框样式-->
+    <link href="css/index.css" rel="stylesheet"/>
+    <!--键盘样式-->
+    <link href="css/key.css" rel="stylesheet"/>
+    <style>
+        .mask{
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgba(0,0,0,0.3);
+            color: #000000;
+            display: none;
+        }
+        .alert{
+            width: 7.733333rem;
+            height: 5.52rem;
+            background-color: #ffffff;
+            border-radius: 10px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+        }
+        .alert p{
+            width: 7.733333rem;
+            text-align: center;
+        }
+        .alert p:first-child{
+            border-bottom: 1px solid #ECEDEE;
+            height: 1.333333rem;
+            line-height: 1.333333rem;
+            font-size: 0.48rem;
+        }
+        .tip_spe{
+            font-size: 0.4rem;
+            color: #DE2020;
+            padding: 0.5rem 0.2rem 0 0.2rem;
+            width: 7.333333rem!important;
+        }
+        .sure{
+            width: 4.906667rem;
+            height: 1rem;
+            position: absolute;
+            color: #6093fc;
+            border: 1px solid #6093fc;
+            background-color: #ffffff;
+            border-radius: 10px;
+            left: 0;
+            right: 0;
+            bottom: 0.88rem;
+            margin: auto;
+            -webkit-appearance: none;
+            font-size: 0.4rem;
+        }
+    </style>
+    <script>
+        var userAgent = navigator.userAgent.toLowerCase();
+        var verson = '';
+        if(userAgent.match(/MicroMessenger/i)=="micromessenger") {
+            verson = 'wx';
+        }else if(userAgent.match(/Alipay/i)=="alipay"){
+            verson = 'ali';
+        }
+        else {
+//            window.location.href = 'tips.html';
+
+        }
+        var url = window.location.href;
+        var para = url.split('?')[1];
+        var to = para.split('=')[1];
+        /*获取店铺信息*/
+        var shops = document.getElementsByClassName('shop');
+        var xhr = new XMLHttpRequest();
+        xhr.open('get','http://machong8888.6655.la/pay/shopname?token='+to,true);
+        xhr.send(null);
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState == 4){
+                if(xhr.status == 200){
+                    var result = xhr.responseText;
+                    var res = JSON.parse(result);
+                    if(res.status == 1){
+                        shops[0].innerHTML = res.data;
+                    }else if(res.status == 0){
+                        tip.innerHTML = res.data;
+                        mask.style.display = 'block';
+                    }
+
+                }
+            }
+        };
+    </script>
+</head>
+<body>
+<div class="wrap">
+    <div class="clear pad4 bgw">
+        <img src="image/shop.png" class="shop_img fl"/>
+        <p class="shop fl fs32" style="width: 7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">杂粮煎饼-建外SOHO店杂粮煎饼-建外SOHO店杂粮煎饼-建外SOHO店杂粮煎饼-建外SOHO店杂粮煎饼-建外SOHO店</p>
+    </div>
+    <div class="bgw pad4 pd">
+        <div class="mt4 input_money">
+            <p class="fs32">消费金额&nbsp;(可询问工作人员应缴费用总额)</p>
+            <div class="mt56">
+                <div class="shuru">
+                    <span class="rmb">&yen;</span>
+                    <div id="div" class="show"></div>
+                    <div id="mdiv1"><span id="guangbiao">|</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--键盘容器-->
+<div id="key"></div>
+<div class="pad4">
+    <p class="support pos_re">
+        <i class="line pos_ab l1"></i>
+        由运通商务提供技术支持
+        <i class="line pos_ab l2"></i>
+    </p>
+</div>
+<!--提示弹框-->
+<div id="mask" class="mask">
+    <div class="alert">
+        <p id="error">提示</p>
+        <p id="tip" class="tip_spe">请输入</p>
+        <input type="button" value="确认" class="sure" id="sure"/>
+    </div>
+</div>
+<!--引入插件-->
+<script src="js/key.js" type="text/javascript"></script>
+<script>
+    var tip = document.getElementById('tip');
+    var sure = document.getElementById('sure');
+    var mask = document.getElementById('mask');
+    sure.onclick = function(){
+        mask.style.display = 'none';
+        if(verson == 'wx'){
+            //取消支付 退出微信浏览器
+            WeixinJSBridge.call('closeWindow');
+        }
+        if(verson == 'ali'){
+            //取消支付 退出支付宝浏览器
+            AlipayJSBridge.call('vibrate');
+            AlipayJSBridge.call('toast', {
+                content: '支付取消！',
+                type: 'fail',
+                duration: 1000
+            }, function(){
+                AlipayJSBridge.call('closeWebview');
+            });
+        }
+    };
+    /*实例化插件*/
+    var definedKey = new CreatKey();
+    definedKey.keyInit({
+        ele:"key",      /*容器div id*/
+        cursor:"guangbiao", /*光标id*/
+        num:"div",       /*显示输入数值的div id*/
+        ale:"mask",   /*弹框*/
+        tip:"tip",     /*弹框信息*/
+        sure:"sure",    /*确认按钮*/
+        token:to,       /*获取的token值*/
+        browser:verson   /*浏览器是微信还是支付宝内置的*/
+    });
+</script>
+</body>
+</html>

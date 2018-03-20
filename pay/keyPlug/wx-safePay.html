@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>微信安全支付</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <style type="text/css">
+        body{padding: 0;margin:0;background-color:#eeeeee;font-family: '黑体';}
+        .pay-main{background-color: #4cb131;padding-top: 20px;padding-left: 20px;padding-bottom: 20px;}
+        .pay-main img{margin: 0 auto;display: block;}
+        .pay-main .lines{margin: 0 auto;text-align: center;color:#cae8c2;font-size:12pt;margin-top: 10px;}
+        .tips {padding: 20px 0 0 20px;}
+        .tips .img img{width:20px;}
+        .tips span{vertical-align: top;color:#ababab;line-height:18px;padding-left: 10px;padding-top:0px;}
+        .action{background:#4cb131;padding: 10px 0;color:#ffffff;text-align: center;font-size:14pt;border-radius: 10px 10px; margin: 15px;}
+        .action:focus{background:#4cb131;}
+        .action.disabled{background-color:#aeaeae;}
+        .footer{position: absolute;bottom:0;left:0;right:0;text-align: center;padding-bottom: 20px;font-size:10pt;color:#aeaeae;}
+        .footer .ct-if{margin-top:6px;font-size:8pt;}
+    </style>
+</head>
+<body>
+<div class="conainer">
+    <div class="pay-main">
+        <img src="image/pay_logo.png"/>
+        <div class="lines"><span>微信安全支付</span></div>
+    </div>
+    <div class="tips">
+        <div class="img">
+            <img src="image/pay_ok.png"/>
+            <span>已开启支付安全</span>
+        </div>
+    </div>
+    <div id="action" class="action">确认支付</div>
+    <div class="footer"><div>支付安全由中国人民财产保险股份有限公司承保</div><div class="ct-if"></div></div>
+</div>
+<script type="text/javascript">
+    (function(){
+        var onApiSuccess = function(){};
+        var onBridgeReady = function(){
+            WeixinJSBridge.call('hideOptionMenu');
+            WeixinJSBridge.call('hideToolbar');
+            onApiSuccess();
+        };
+        if (typeof WeixinJSBridge == "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+            }else {
+                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+            }
+        }else{
+            onBridgeReady();
+        }
+        var process = false;
+        var btn = document.getElementById('action');
+        onApiSuccess = function(){
+            console.log(1);
+            if(typeof WeixinJSBridge == "undefined") return;
+            if(process) return;
+            process = true;
+            var options = {
+                "appId" : 'wx290ce4878c94369d', //公众号名称，由商户传入
+                "timeStamp" : '1515552759150', //时间戳
+                "nonceStr" : '1515552759150', //随机串
+                "package" : 'prepay_id=wx201801091932106e0055f42e0460886874',//扩展包
+                "signType" : 'MD5', //微信签名方式:1.sha1
+                "paySign" : 'D7E595B00B4D48E8A1D22B467C990F63' //微信签名
+            };
+            WeixinJSBridge.invoke('getBrandWCPayRequest', options ,function(res){
+                process = false;
+                if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+                    var callbackUrl = 'http://yt.qianjin001.com/yuntong/qr/wei_fu_tong_bill!paySuccess.action?orderId=W_100000282612,1';
+                    if(callbackUrl && callbackUrl.length > 0){
+                        location.href = callbackUrl;
+                    }
+                }
+//使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+//因此微信团队建议，当收到ok返回时，向商户后台询问是否收到交易成功的通知，
+//若收到通知，前端展示交易成功的界面；
+//若此时未收到通知，商户后台主动调用查询订单接口，查询订单的当前状态，并反馈给前端展示相应的界面。
+            });
+        };
+        btn.onclick = onApiSuccess;
+//        if( document.addEventListener ){
+//            btn.addEventListener('click', onApiSuccess, false);
+//        }else {
+//            btn.attachEvent('onclick', onApiSuccess);
+//        }
+        onApiSuccess();
+    })();
+</script>
+</body>
+</html>

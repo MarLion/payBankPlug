@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1,user-scalable=no"/>
+        <title>支付</title>
+        <script src="js/fontSize.js" type="text/javascript"></script>
+        <link href="css/index.css" rel="stylesheet"/>
+        <style>
+            html,
+            body {
+                height: 100%;
+                overflow: hidden;
+                position: fixed;
+            }
+            .wrap {
+                position: relative;
+                margin: auto;
+                max-width: 640px;
+                min-width: 320px;
+                width: 100%;
+                height: 100%;
+                background: #F0EFF5;
+                overflow: hidden;
+            }
+            .layer-content {
+                position: absolute;
+                left: 50%;
+                bottom: -200px;
+                width: 100%;
+                max-width: 640px;
+                height: auto;
+                z-index: 12;
+                -webkit-transform: translateX(-50%);
+                transform: translateX(-50%);
+            }
+            .shuru {
+                position: relative;
+                margin-bottom: 10px;
+            }
+
+            .shuru div {
+                border: none;
+                width: 95%;
+                height: 40px;
+                font-size: 25px;
+                line-height: 40px;
+                border-bottom: 1px solid #CFCFCF;
+                text-indent: 30px;
+                outline: none;
+                white-space: pre;
+                overflow-x: scroll;
+            }
+
+            .shuru span {
+                position: absolute;
+                top: 5px;
+                font-size: 25px;
+            }
+            .form_edit {
+                width: 100%;
+                background: #D1D4DD;
+            }
+
+            .form_edit> div {
+                margin-bottom: 2px;
+                margin-right: 0.5%;
+                float: left;
+                width: 33%;
+                height: 45px;
+                text-align: center;
+                color: #333;
+                line-height: 45px;
+                font-size: 18px;
+                font-weight: 600;
+                background-color: #fff;
+                border-radius: 5px;
+            }
+
+            .form_edit> div:nth-child(3n) {
+                margin-right: 0;
+            }
+
+            .form_edit> div:last-child {
+                background-color: #DEE1E9;
+            }
+            .active{
+                background-color: #67F85B!important;
+            }
+        </style>
+    </head>
+<body>
+    <div class="wrap">
+        <div class="clear pad4 bgw">
+            <img src="image/shop.png" class="shop_img fl"/>
+            <p class="shop fl fs32">杂粮煎饼-建外SOHO店</p>
+        </div>
+    <div class="bgw pad4 pd">
+        <form method="post" action="###" id="money_form">
+            <div class="mt4 input_money">
+                <p class="fs32">消费金额(可询问工作人员应缴费用总额)</p>
+                <p class="mt56">
+                    <div class="shuru">
+                        <span>&yen;</span>
+                        <div id="div"></div>
+                    </div>
+                </p>
+            </div>
+            <input type="hidden" id="money_val"/>
+            <input type="button" value="确认支付" id="btn" class="active pay_btn" disabled="disabled"/>
+        </form>
+    </div>
+    <div class="pad4">
+        <p class="support pos_re">
+            <i class="line pos_ab l1"></i>
+            由运通商务提供技术支持
+            <i class="line pos_ab l2"></i>
+        </p>
+    </div>
+</div>
+
+    <div class="layer-content">
+        <div class="form_edit clearfix clear">
+            <div class="num">1</div>
+            <div class="num">2</div>
+            <div class="num">3</div>
+            <div class="num">4</div>
+            <div class="num">5</div>
+            <div class="num">6</div>
+            <div class="num">7</div>
+            <div class="num">8</div>
+            <div class="num">9</div>
+            <div class="num">.</div>
+            <div class="num">0</div>
+            <div id="remove">删除</div>
+        </div>
+    </div>
+<script src="js/jquery-3.1.1.min.js"></script>
+<script>
+    $(function(){
+        // 监听#div内容变化，改变支付按钮的颜色
+        $('#div').bind('DOMNodeInserted', function(){
+            if($("#div").text()!="" || $("#div").text()>'0'){
+                $('.pay_btn').removeClass('active');
+                $('.pay_btn').attr('disabled', false);
+            }else{
+                $('.pay_btn').addClass('active');
+                $('.pay_btn').attr('disabled', true);
+            }
+        });
+        $('#div').trigger('DOMNodeInserted');
+
+        $('.shuru').click(function(e){
+            $('.layer-content').animate({
+                bottom: 0
+            }, 200);
+            e.stopPropagation();
+        });
+        $('.wrap').click(function(){
+            $('.layer-content').animate({
+                bottom: '-200px'
+            }, 200)
+        });
+
+        $('.form_edit .num').click(function(){
+            var oDiv = document.getElementById("div");
+            oDiv.innerHTML += this.innerHTML;
+        });
+        $('#remove').click(function(){
+            var oDiv = document.getElementById("div");
+            var oDivHtml = oDiv.innerHTML;
+            oDiv.innerHTML = oDivHtml.substring(0,oDivHtml.length-1);
+        });
+        $("#btn").on("click",function(){
+            $("#money_val").val($("#div").text());
+            console.log($("#div").text());
+            console.log($("#money_val").val());
+            $("#money_form").submit();
+        })
+        $("#sub1").on('click',function(e){
+            if($("#uname").val() == ''){
+                e.preventDefault();
+                alert('用户名不能为空！');
+            }else if($("#upass").val() == ''){
+                e.preventDefault();
+                alert('密码不能为空！');
+            }else {
+                $("#vgForm").submit();
+            }
+        })
+    })
+</script>
+</body>
+</html>

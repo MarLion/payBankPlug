@@ -1,0 +1,12 @@
+.head article{color:#fff;font-size:18px;}
+#mdiv1{position:absolute;z-index:1;left:20px;top:4px;font-size:24px;color:#0388d1;}
+#key{position:fixed;left:0;bottom:0;height:208px;background:#eee;width:100%;display:block;}
+.foot_key{width:100%;height:208px;background:#eee;moz-user-select: -moz-none;-moz-user-select: none;-o-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none;}
+.tab_key{width:100%;border-collapse: collapse;}
+.tab_key tr td{width:25%;text-align: center;line-height: 50px;font-size: 24px;background: #fff;position: relative;}
+.tab_key tr td:after{content: "";position: absolute;left: 0;top: 0;width: 200%;height: 200%;border-right: 1px solid #ccc;border-top: 1px solid #ccc;-webkit-box-sizing: border-box;box-sizing: border-box;-webkit-transform: scale(0.5);transform: scale(0.5);-webkit-transform-origin: left top;transform-origin: left top;}
+.shuru {position: relative;margin-bottom: 10px;  }
+.show {border: none;width: 95%;height: 40px;font-size: 25px;line-height: 40px;border-bottom: 1px solid #CFCFCF;text-indent: 30px;outline: none;white-space: pre;overflow-x: scroll;}
+.rmb{position: absolute;top: 5px;font-size: 25px;}
+.form_edit> div {margin-bottom: 2px;margin-right: 0.5%;float: left;width: 33%;height: 45px;text-align: center;color: #333;line-height: 45px;font-size: 18px;font-weight: 600;background-color: #fff;border-radius: 5px;}
+
